@@ -33,6 +33,7 @@ def getRandomColor():
 def splitRegionHorizontal(x, y, width, height, canvas):
     # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
     horizSplitPoint = (random.randrange(33, 68) / 100)
+<<<<<<< HEAD
     topRegion = round(horizSplitPoint * width)  # Randomly assigns top region using random split point
     bottomRegion = width - topRegion  # Splits into two regions– top and bottom
     # Draw mondrian at the intial point provided and then draw Mondrian using the regions
@@ -40,11 +41,21 @@ def splitRegionHorizontal(x, y, width, height, canvas):
     # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
     #   add the top region and bottom region
     drawMondrianArt(x, y + topRegion, width, bottomRegion, canvas)
+=======
+    leftRegion = round(horizSplitPoint * width)  # Randomly assigns top region using random split point
+    rightRegion = width - leftRegion  # Splits into two regions– top and bottom
+    # Draw mondrian at the initial point provided and then draw Mondrian using the regions
+    drawMondrianArt(x, y, leftRegion, height, canvas)
+    # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
+    #   add the left region to the initial point and use right region as the width
+    drawMondrianArt(x + leftRegion, y, rightRegion, height, canvas)
+>>>>>>> 0487cbe6045a4b2e7e7b9da847e665b636dd22c5
 
 # Split vertical
 def splitRegionVertical(x, y, width, height, canvas):
     # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
     vertSplitPoint = (random.randrange(33, 68) / 100)
+<<<<<<< HEAD
     leftRegion = round(vertSplitPoint * height) # Randomly assigns top region using random split point
     rightRegion = height - leftRegion # Splits into two regions– top and bottom
     # Draw mondrian at the intial point provided and then draw Mondrian using the regions
@@ -52,6 +63,15 @@ def splitRegionVertical(x, y, width, height, canvas):
     # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
     #   add the top region to the intial point and use bottom region as the height
     drawMondrianArt(x + leftRegion, y, rightRegion, height, canvas)
+=======
+    topRegion = round(vertSplitPoint * height) # Randomly assigns top region using random split point
+    bottomRegion = height - topRegion # Splits into two regions– top and bottom
+    # Draw mondrian at the initial point provided and then draw Mondrian using the regions
+    drawMondrianArt(x, y, width, topRegion, canvas)
+    # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
+    #   add the top region to the initial point and use bottom region as the height
+    drawMondrianArt(x, y + topRegion, width, bottomRegion, canvas)
+>>>>>>> 0487cbe6045a4b2e7e7b9da847e665b636dd22c5
 
 # Split both regions
 def splitRegionBoth(x, y, width, height, canvas):
@@ -66,8 +86,8 @@ def splitRegionBoth(x, y, width, height, canvas):
     topRegion = round(vertSplitPoint * height) # Randomly assigns top region using random split point
     bottomRegion = height - topRegion # Splits into two regions– top and bottom
 
-    # Draw mondrian at the intial point provided and then draw Mondrian using the left-right regions and top-bottom
-    drawMondrianArt(x, y, leftRegion, topRegion, canvas) # intial and left + top split
+    # Draw mondrian at the initial point provided and then draw Mondrian using the left-right regions and top-bottom
+    drawMondrianArt(x, y, leftRegion, topRegion, canvas) # initial and left + top split
     drawMondrianArt(x + leftRegion, y, rightRegion, topRegion, canvas) # left shift, right and top
     drawMondrianArt(x, y + topRegion, leftRegion, bottomRegion, canvas) # top shift, left, and bottom
     drawMondrianArt(x + leftRegion, y + topRegion, rightRegion, bottomRegion, canvas) # left, top, right, and bottom shifts
