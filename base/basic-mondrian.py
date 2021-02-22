@@ -19,7 +19,7 @@ splitPenalty = 1.5 # Provides a random chance that a larger region will not be s
 # Generate a random color
 def getRandomColor():
     # Convert integer to decimal form
-    randVal = (random.randint(0, 101) / 100)
+    randVal = (random.randint(0, 101) / 1000)
     if (randVal < 0.0833):
         return 'red'
     elif (randVal < 0.1667):
