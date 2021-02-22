@@ -29,60 +29,67 @@ def getRandomColor():
     else:
         return 'white'
 
-# Split horizontal
+# Split horizontal: top and bottom
 def splitRegionHorizontal(x, y, width, height, canvas):
+    print('Splitting horizontal...')
     # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
     horizSplitPoint = (random.randrange(33, 68) / 100)
-    leftRegion = round(horizSplitPoint * width)  # Randomly assigns top region using random split point
-    rightRegion = width - leftRegion  # Splits into two regions– top and bottom
+    topRegion = round(horizSplitPoint * width)  # Randomly assigns top region using random split point
+    bottomRegion = width - topRegion  # Splits into two regions– top and bottom
+    # Draw mondrian at the initial point provided and then draw Mondrian using the regions
+    drawMondrianArt(x, y, width, topRegion, canvas)
+    # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
+    #   add the top region and bottom region
+    drawMondrianArt(x, y + topRegion, width, bottomRegion, canvas)
+
+# Split vertical: left and right
+def splitRegionVertical(x, y, width, height, canvas):
+    print('Splitting vertical...')
+    # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
+    vertSplitPoint = (random.randrange(33, 68) / 100)
+    leftRegion = round(vertSplitPoint * height) # Randomly assigns left region using random split point
+    rightRegion = height - leftRegion # Splits into two regions– left and right
     # Draw mondrian at the initial point provided and then draw Mondrian using the regions
     drawMondrianArt(x, y, leftRegion, height, canvas)
     # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
     #   add the left region to the initial point and use right region as the width
     drawMondrianArt(x + leftRegion, y, rightRegion, height, canvas)
 
-# Split vertical
-def splitRegionVertical(x, y, width, height, canvas):
-    # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
-    vertSplitPoint = (random.randrange(33, 68) / 100)
-    topRegion = round(vertSplitPoint * height) # Randomly assigns top region using random split point
-    bottomRegion = height - topRegion # Splits into two regions– top and bottom
-    # Draw mondrian at the initial point provided and then draw Mondrian using the regions
-    drawMondrianArt(x, y, width, topRegion, canvas)
-    # Since the create_rectangle method works inverted (top->bottom, not bottom->top),
-    #   add the top region to the initial point and use bottom region as the height
-    drawMondrianArt(x, y + topRegion, width, bottomRegion, canvas)
-
 # Split both regions
 def splitRegionBoth(x, y, width, height, canvas):
+    print('Splitting both...')
     # Combine horizontal region split and vertical region split
     # Choose split point randomly (range end stops before end value) need as decimal, so divide by 100
     horizSplitPoint = (random.randrange(33, 68) / 100)
     vertSplitPoint = (random.randrange(33, 68) / 100)
 
-    leftRegion = round(horizSplitPoint * width)  # Randomly assigns top region using random split point
-    rightRegion = width - leftRegion  # Splits into two regions– left and right
+    leftRegion = round(vertSplitPoint * height)  # Randomly assigns top region using random split point
+    rightRegion = height - leftRegion  # Splits into two regions– left and right
 
-    topRegion = round(vertSplitPoint * height) # Randomly assigns top region using random split point
-    bottomRegion = height - topRegion # Splits into two regions– top and bottom
+    topRegion = round(horizSplitPoint * width) # Randomly assigns top region using random split point
+    bottomRegion = width - topRegion # Splits into two regions– top and bottom
 
     # Draw mondrian at the initial point provided and then draw Mondrian using the left-right regions and top-bottom
-    drawMondrianArt(x, y, leftRegion, topRegion, canvas) # initial and left + top split
-    drawMondrianArt(x + leftRegion, y, rightRegion, topRegion, canvas) # left shift, right and top
-    drawMondrianArt(x, y + topRegion, leftRegion, bottomRegion, canvas) # top shift, left, and bottom
-    drawMondrianArt(x + leftRegion, y + topRegion, rightRegion, bottomRegion, canvas) # left, top, right, and bottom shifts
+    # Split into four quadrants: ([Q1: x,y], [Q2: x+,y], [Q3: x,y+], [Q4: x+,y+])
+    drawMondrianArt(x, y, leftRegion, topRegion, canvas) # At initial + left and top splits (Q1)
+    drawMondrianArt(x + leftRegion, y, rightRegion, topRegion, canvas) # shift by left and set width and height to splits (Q2)
+    drawMondrianArt(x, y + topRegion, leftRegion, bottomRegion, canvas) # shift by top and use left and bottom splits (Q3)
+    drawMondrianArt(x + leftRegion, y + topRegion, rightRegion, bottomRegion, canvas) # use all second splits (Q4)
 
 # Draw Mondrian art
 def drawMondrianArt(x, y, width, height, canvas):
+    print('Drawing mondrian...')
     if (width > canvasWidth / 2 and height > canvasHeight / 2):
         # Split region into 4 smaller regions– split both
         splitRegionBoth(x, y, width, height, canvas)
     elif (width > canvasWidth / 2):
         # Split using vertical line
-        splitRegionHorizontal(x, y, width, height, canvas)
+        splitRegionVertical(x, y, width, height, canvas)
+        # splitRegionHorizontal(x, y, width, height, canvas)
     elif (height > canvasHeight / 2):
         # Split using horizontal line
-        splitRegionVertical(x, y, width, height, canvas)
+        splitRegionHorizontal(x, y, width, height, canvas)
+        # splitRegionVertical(x, y, width, height, canvas)
     else:
         # Default condition (if x, y = 0,0)
         # Splits randomly selected
@@ -106,7 +113,7 @@ def drawMondrianArt(x, y, width, height, canvas):
             # Using Tkinter, create a filled rectangle using random color
             # NOTE: (x,y) is starting coordinate, (x1,y1) is coordinate just outside the bottom-right corner
             # create_rectangle(x0, y0, x1, y1, option, ...)
-            # To get to bottom right corner, determine the region (width, height) provided and add the intial coordinate
+            # To get to bottom right corner, determine the region (width, height) provided and add the initial coordinate
             canvas.create_rectangle(x, y, (width + x), (height + y), fill=randomColor, outline='black', width=2)
 
 # Define our 'main' function
