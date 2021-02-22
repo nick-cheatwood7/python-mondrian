@@ -8,7 +8,7 @@
 [x] Use a broad color pallet for filled regions
 [] Change the distribution of random numbers used when selecting size of regions
     [x] add two random numbers together and divide by two to favor numbers in middle of random space
-[] Occasionally split a region into 3 smaller regions instead of 2 or 4
+[x] Occasionally split a region into 3 smaller regions instead of 2 or 4
 '''
 
 # Import Packages
